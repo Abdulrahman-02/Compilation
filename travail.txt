@@ -1,0 +1,17 @@
+    Travail demandé
+
+Donnez l'implémentation de l'analyseur lexical spécifié dans la série de TP N°2  en utilisant la méthode par table des transitions.
+
+    Format du rapport  (ZIP)
+
+Document ZIP qui contient :
+
+1. Fichier en format Word décrivant les étapes suivies( mettez votre nom , prénom, groupe et section)
+
+2. Fichier  en langage C de l'analyseur lexical.
+
+NB:
+
+- le rapport est individuel.
+
+- Envoyer le document ZIP au mail :  samir.sadou@gmail.com
