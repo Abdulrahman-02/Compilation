@@ -96,13 +96,13 @@ void main(){
 		switch(tc){
 			case ACG:printf("<ACG>\n"); break;
 			case FIN:printf("<FIN>\n");break;
-			case PV:printf("<PV>\n");
-			case COND:printf("<COND>\n");
-			case ID:printf("<ID>\n");
-			case NUM:printf("<NUM>\n");
-			case ACD:printf("<ACD>\n");
-			case OP:printf("<OP>\n");
-			case AFFECT:printf("<AFFECT>\n");
+			case PV:printf("<PV>\n");break;
+			case COND:printf("<COND>\n");break;
+			case ID:printf("<ID>\n");break;
+			case NUM:printf("<NUM>\n");break;
+			case ACD:printf("<ACD>\n");break;
+			case OP:printf("<OP>\n");break;
+			case AFFECT:printf("<AFFECT>\n");break;
 	}
 }
 printf("<FIN>\n");
