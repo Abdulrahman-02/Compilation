@@ -2,8 +2,11 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 enum Token{FIN,PV,AFFECT,COND,ACG,ACD,ID,NUM,OP};   // Codification des Tokens
+enum CODEOPERATION{PLUS,MOINS,MODULO};
+
 
 char programme[512];    // Programme source
 
@@ -17,6 +20,27 @@ int table [6] [13] = {{7,8,14,9,1,12,13,13,4,5,5,-1,0,-1},
                      {11,11,11,11,11,11,11,11,11,5,5,11,11,11}
                      };    // Table de transition
 
+/* cette variable contiendra la valeur
+d'attribut du dernier token reconu */
+union {
+    char * nom;
+    int valeur;
+    enum CODEOPERATION cop;
+} attribut;
+
+/* La fonction get_lexeme() permet de recupérer le dernier lexème reconnu 
+   Elle utilise les fonctions malloc() et strncpy() offertes, 
+   respectivement, dans <stdlib.h> et <string.h> */
+char* get_lexeme(){
+    int longueur=position-debut;                 /* longueur du lexème. */
+
+    char* lexeme=(char*) malloc(longueur+1);     /* allocation de l'espace mémoire. */
+    strncpy(lexeme,programme+debut,longueur);    /* le lexème commence a l'adresse
+                                                    programme+debut*/                                                
+    lexeme[longueur]='\0';                       /* ajout de la marque de fin de cha�ne. */
+    return lexeme;
+}
+
 /* La fonction car_suivant() retourne le code du prochain caractère du
    programme source et incrémente la variable position */
 int car_suivant(){
@@ -25,7 +49,7 @@ int car_suivant(){
     position++;     //incrémentation de la variable position
 
     if(c =='\0') return 0;
-    if(c ==';') return 1 ;
+    if(c ==';') return 1;
     if(c =='=') return 2;
     if(c =='?') return 3;
     if(c =='{') return 4;
@@ -70,10 +94,12 @@ enum Token token_suivant(){
   case 7: return FIN; break;
   case 8: return PV; break;
   case 9: return COND; break;
-  case 10: reculer(); return ID; break;
-  case 11: reculer(); return NUM; break;
+  case 10: reculer(); attribut.nom=get_lexeme(); return ID; break;
+  case 11: reculer(); attribut.valeur=atoi(get_lexeme()); return NUM; break;
   case 12: return ACD; break;
-  case 13: return OP; break;
+  case 13: if(get_lexeme()[0]=='+') attribut.cop=PLUS;
+           else if(get_lexeme()[0]=='%') attribut.cop=MODULO;   /* déterminer et positionner le code d'opération */
+           else attribut.cop=MOINS; return OP; break;
   case 14: return AFFECT; break;
   default: erreur_lexicale(); break;
   }
@@ -98,10 +124,13 @@ void main(){
 			case FIN:printf("<FIN>\n");break;
 			case PV:printf("<PV>\n");break;
 			case COND:printf("<COND>\n");break;
-			case ID:printf("<ID>\n");break;
-			case NUM:printf("<NUM>\n");break;
+			case ID:printf("<ID, \"%s\">\n",attribut.nom);break;
+			case NUM:printf("<NUM, %d>\n",attribut.valeur);break;
 			case ACD:printf("<ACD>\n");break;
-			case OP:printf("<OP>\n");break;
+			case OP:printf("<OP, ");
+              if (attribut.cop==PLUS) printf("PLUS>\n");
+              else if (attribut.cop==MODULO) printf("MODULO>\n");
+              else printf("MOINS>\n");break;
 			case AFFECT:printf("<AFFECT>\n");break;
 	}
 }
