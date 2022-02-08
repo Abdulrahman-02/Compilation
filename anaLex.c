@@ -10,18 +10,18 @@ char programme[512];    // Programme source
 int position,debut;   //Variable position
 
 int table [6] [13] = {{7,8,14,9,1,12,13,13,4,5,5,-1,0,-1},
-                     {-1,-1,-1,-1,-1,-1,-1,2,-1,-1,-1,-1,-1,6},
-                     {-1,-1,-1,-1,-1,-1,-1,3,-1,-1,-1,-1,-1,2},
-                     {-1,-1,-1,-1,-1,0,-1,3,-1,-1,-1,-1,-1,2},
-                     {-1,-1,-1,-1,-1,-1,-1,-1,-1,4,4,4,-1,10},
-                     {-1,-1,-1,-1,-1,-1,-1,-1,-1,5,5,-1,-1,11}
+                     {6,6,6,6,6,6,6,2,6,6,6,6,6,6},
+                     {2,2,2,2,2,2,2,3,2,2,2,2,2,2},
+                     {2,2,2,2,2,0,2,3,2,2,2,2,2,2},
+                     {10,10,10,10,10,10,10,10,10,4,4,4,10,10},
+                     {11,11,11,11,11,11,11,11,11,5,5,11,11,11}
                      };    // Table de transition
 
-/* La fonction car_suivant() retourne le code du prochain caractère du 
+/* La fonction car_suivant() retourne le code du prochain caractère du
    programme source et incrémente la variable position */
 int car_suivant(){
     char c;    // caractère courant
-    c = programme[position];    // lecture de caractère    
+    c = programme[position];    // lecture de caractère
     position++;     //incrémentation de la variable position
 
     if(c =='\0') return 0;
@@ -30,7 +30,7 @@ int car_suivant(){
     if(c =='?') return 3;
     if(c =='{') return 4;
     if(c =='}') return 5;
-    if(c =='+' || c == "-") return 6;
+    if(c =='+' || c == '-') return 6;
     if(c =='%') return 7;
     if(c == '$') return 8;
     if(c>='0' && c<='9') return 9;
@@ -82,16 +82,16 @@ enum Token token_suivant(){
 // Programme Principale
 void main(){
     enum Token tc;  /* token suivant */
-  
+
     printf("Taper un programme:\n");
     printf("------------------\n");
     scanf("%s", programme);
 
     position=0;
-  
+
     printf("\n\nSéquence des couples <token, attribut>\n");
     printf("--------------------------------------\n");
-    
+
 	while(tc= token_suivant()){
 		switch(tc){
 			case ACG:printf("<ACG>\n"); break;
