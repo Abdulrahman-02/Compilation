@@ -1,2 +1,2 @@
 # Compilation
-Analyseur lexicale pour un mini language
+Analyseur lexicale pour un mini langage
