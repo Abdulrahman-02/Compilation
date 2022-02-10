@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 
 enum Token{FIN,PV,AFFECT,COND,ACG,ACD,ID,NUM,OP};   // Codification des Tokens
 enum CODEOPERATION{PLUS,MOINS,MODULO};
@@ -36,9 +37,39 @@ char* get_lexeme(){
 
     char* lexeme=(char*) malloc(longueur+1);     /* allocation de l'espace mémoire. */
     strncpy(lexeme,programme+debut,longueur);    /* le lexème commence a l'adresse
-                                                    programme+debut*/                                                
-    lexeme[longueur]='\0';                       /* ajout de la marque de fin de cha�ne. */
+                                                    programme+debut */                                                
+    lexeme[longueur]='\0';                       /* ajout de la marque de fin de chaine. */
     return lexeme;
+}
+
+/*
+    fonction atoh() permettant de convertir une chaine composée d'une suite de chiffres hexadécimaux
+     en la valeur numérique correspondante
+*/
+int atoh(char* lex){
+    int decimal = 0, place = 1;
+    int i = 0, val,len;
+
+    len = strlen(lex);
+    len--;
+
+    for(i=0; lex[i]!='\0'; i++)
+
+    {
+        if(lex[i]>='0' && lex[i]<='9')
+        {
+            val = lex[i] - 48;
+        }
+        else if(lex[i]>='A' && lex[i]<='F')
+        {
+            val = lex[i] - 65 + 10;
+        }
+
+        decimal += val * pow(16, len);
+        len--;
+    }
+    return decimal;
+
 }
 
 /* La fonction car_suivant() retourne le code du prochain caractère du
@@ -95,7 +126,7 @@ enum Token token_suivant(){
   case 8: return PV; break;
   case 9: return COND; break;
   case 10: reculer(); attribut.nom=get_lexeme(); return ID; break;
-  case 11: reculer(); attribut.valeur=atoi(get_lexeme()); return NUM; break;
+  case 11: reculer(); attribut.valeur=atoh(get_lexeme()); return NUM; break;
   case 12: return ACD; break;
   case 13: if(get_lexeme()[0]=='+') attribut.cop=PLUS;
            else if(get_lexeme()[0]=='%') attribut.cop=MODULO;   /* déterminer et positionner le code d'opération */
@@ -113,7 +144,7 @@ void main(){
     printf("------------------\n");
     scanf("%s", programme);
 
-    position=0;
+    position = 0;
 
     printf("\n\nSéquence des couples <token, attribut>\n");
     printf("--------------------------------------\n");
