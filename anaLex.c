@@ -3,7 +3,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
 
 enum Token{FIN,PV,AFFECT,COND,ACG,ACD,ID,NUM,OP};   // Codification des Tokens
 enum CODEOPERATION{PLUS,MOINS,MODULO};
@@ -32,6 +31,7 @@ union {
 /* La fonction get_lexeme() permet de recupérer le dernier lexème reconnu 
    Elle utilise les fonctions malloc() et strncpy() offertes, 
    respectivement, dans <stdlib.h> et <string.h> */
+
 char* get_lexeme(){
     int longueur=position-debut;                 /* longueur du lexème. */
 
@@ -42,11 +42,25 @@ char* get_lexeme(){
     return lexeme;
 }
 
+/* fonction puissance utilisé dans atoh() */
+
+int pwr(int base,int exp) {
+    int res=1;
+     
+    while(exp>=1) {
+        res*=base;
+        exp--;
+    }
+    return(res);
+}
+
 /*
     fonction atoh() permettant de convertir une chaine composée d'une suite de chiffres hexadécimaux
      en la valeur numérique correspondante
 */
+
 int atoh(char* lex){
+    
     int decimal = 0, place = 1;
     int i = 0, val,len;
 
@@ -65,7 +79,7 @@ int atoh(char* lex){
             val = lex[i] - 65 + 10;
         }
 
-        decimal += val * pow(16, len);
+        decimal += val * pwr(16, len);
         len--;
     }
     return decimal;
@@ -74,6 +88,7 @@ int atoh(char* lex){
 
 /* La fonction car_suivant() retourne le code du prochain caractère du
    programme source et incrémente la variable position */
+
 int car_suivant(){
     char c;    // caractère courant
     c = programme[position];    // lecture de caractère
@@ -98,18 +113,21 @@ int car_suivant(){
 
 /* La fonction reculer() permet de reculer d'une position sur le programme
    source */
+
 void reculer(){
     position --;
 }
 
 /* La fonction erreur_lexicale() est notre procédure de gestion d'erreurs
    lexicales: elle affiche message en cas d'erreur */
+
 void erreur_lexicale(){
 printf(" \n position %d:  Erreur Lexicale,  CAR :\"%c\" Illegal ! \n ", position, programme[position-1]);
 exit(-1);
 }
 
 /* token_suivant() est la fonction princiaple de l'analyseur lexical */
+
 enum Token token_suivant(){
   int etat = 0;
   int cc;
@@ -137,6 +155,7 @@ enum Token token_suivant(){
 }
 
 // Programme Principale
+
 void main(){
     enum Token tc;  /* token suivant */
 
