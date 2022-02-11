@@ -91,7 +91,7 @@ int car_suivant(){
     if(c>='0' && c<='9') return 9;
     if(c>='A' && c<='F') return 10;
     if(c>='G' && c<='Z') return 11;
-    if(c =='\t') return 12;
+    if(c =='\t' || c == ' ') return 12;
     return 13;
 
 }
@@ -105,7 +105,7 @@ void reculer(){
 /* La fonction erreur_lexicale() est notre procédure de gestion d'erreurs
    lexicales: elle affiche message en cas d'erreur */
 void erreur_lexicale(){
-printf(" \n position %d: Erreur Lexicale,  CAR :\"%c\" Illegal ! \n ", position, programme[position-1]);
+printf(" \n position %d:  Erreur Lexicale,  CAR :\"%c\" Illegal ! \n ", position, programme[position-1]);
 exit(-1);
 }
 
@@ -142,7 +142,7 @@ void main(){
 
     printf("Taper un programme:\n");
     printf("------------------\n");
-    scanf("%s", programme);
+    scanf("%[\12-\277]", programme);
 
     position = 0;
 
